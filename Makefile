@@ -1,6 +1,6 @@
 BUILD_DIR=build
 CC=gcc 
-CFLAGS= -Wall -Wextra -Werror -Wno-missing-field-initializers -o $(BUILD_DIR)/$@ -I include/
+CFLAGS= -m32 -Wall -Wextra -Werror -Wno-missing-field-initializers -o $(BUILD_DIR)/$@ -I include/
 
 default: cpuinfo_parser
 
