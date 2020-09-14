@@ -2,6 +2,15 @@
 #include <stdio.h>
 #include <string.h>
 
+/*
+This is all based on CHDK cpuinfo module, made to work standalone on Linux.
+https://app.assembla.com/spaces/chdk/subversion/source/HEAD/trunk/modules/cpuinfo.c
+
+I'm not a CHDK dev and haven't tested this code well.
+
+Their code is GPL 2 so this code probably is as well.
+*/
+
 #include "cpuinfo.h"
 
 const struct cpuinfo_bitfield_desc_s cpuinf_id[] = {
@@ -1042,8 +1051,8 @@ uint32_t get_num_cpuinfo_words()
 
 void cpuinfo_write_file(uint32_t *cpuinfo) {
     int i,j;
-    unsigned fieldval,wordval;
-    unsigned mask,bits;
+    unsigned fieldval, wordval;
+    unsigned mask, bits;
     char buf[100];
     char *p;
 
@@ -1076,7 +1085,7 @@ void cpuinfo_write_file(uint32_t *cpuinfo) {
         for(j=0; cpuinfo_desc[i].fields[j].name; j++) {
             p = buf;
             bits = cpuinfo_desc[i].fields[j].bits;
-            mask = ~(0xFFFFFFFF << bits);
+            mask = (bits == 32) ? 0xffffffff : ~(0xFFFFFFFF << bits);
             fieldval = wordval & mask;
             p += sprintf(p,"  %-20s 0x%X %d", cpuinfo_desc[i].fields[j].name, fieldval, fieldval);
             if(cpuinfo_desc[i].fields[j].desc_fn) {
